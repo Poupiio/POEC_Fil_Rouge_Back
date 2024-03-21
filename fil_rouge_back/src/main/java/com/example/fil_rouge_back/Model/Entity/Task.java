@@ -1,13 +1,8 @@
 package com.example.fil_rouge_back.Model.Entity;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
 @Entity
 @Getter
@@ -24,8 +19,8 @@ public class Task {
         this.description = description;
         this.status = status;
         this.estimationHours = estimationHours;
-        /* this.projectId = projectId;
-        this.userId = userId;
+         this.projectId = projectId;
+        /*this.userId = userId;
         */
     }
 
@@ -39,8 +34,57 @@ public class Task {
     private String description;
     private Status status;
     private Float estimationHours;
-    /*
+@ManyToOne(fetch = FetchType.LAZY)
+@JoinColumn(name = "project_id")
     private Project projectId;
-    private Optional<User> userId;
+    /* private Optional<User> userId;
     */
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Float getEstimationHours() {
+        return estimationHours;
+    }
+
+    public void setEstimationHours(Float estimationHours) {
+        this.estimationHours = estimationHours;
+    }
+
+    public Project getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Project projectId) {
+        this.projectId = projectId;
+    }
 }
