@@ -1,6 +1,6 @@
 package com.example.fil_rouge_back.Service;
 
-import com.example.fil_rouge_back.Model.Entity.Task;
+import com.example.fil_rouge_back.Model.Entity.TaskEntity;
 import com.example.fil_rouge_back.Model.Repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,17 +18,17 @@ public class TaskService {
     }
 
     // Récupération de toutes les tâches
-    public List<Task> getAllTasks() {
+    public List<TaskEntity> getAllTasks() {
         return this.repo.findAll();
     }
 
     // Récupération d'une tache grâce à son id
-    public Optional<Task> getTaskById(Long id) {
+    public Optional<TaskEntity> getTaskById(Long id) {
         return this.repo.findById(id);
     }
 
     // Création d'une tâche
-    public Task createTask(Task data) {
+    public TaskEntity createTask(TaskEntity data) {
         return this.repo.save(data);
     }
 
