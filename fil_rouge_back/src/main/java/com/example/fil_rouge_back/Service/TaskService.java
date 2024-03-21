@@ -28,7 +28,7 @@ public class TaskService {
     }
 
     // Récupérer une tâche grâce à son nom
-    public Optional<Task> findByTitle(String title) {
+    public Optional<TaskEntity> findByTitle(String title) {
         return this.repo.findByTitle(title);
     }
 
@@ -38,8 +38,8 @@ public class TaskService {
     }
 
     // Modification d'une tâche
-    public Task updateTask(Long id, Task data) {
-        Task task = this.repo.findById(id).get();
+    public TaskEntity updateTask(Long id, TaskEntity data) {
+        TaskEntity task = this.repo.findById(id).get();
         task.setTitle(data.getTitle());
         task.setDescription(data.getDescription());
         task.setStatus(data.getStatus());
