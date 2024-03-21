@@ -1,5 +1,7 @@
 package com.example.fil_rouge_back.Service;
 
+import com.example.fil_rouge_back.Model.DTO.UserDTO;
+import com.example.fil_rouge_back.Model.Entity.Project;
 import com.example.fil_rouge_back.Model.Entity.User;
 import com.example.fil_rouge_back.Model.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import java.util.List;
 public class UserService {
     @Autowired
     private UserRepository userRepo;
+    private ProjectService projectService;
 
     // Récupération de tous les utilisateurs
     public List<User> getAllUsers() {
@@ -47,5 +50,32 @@ public class UserService {
      List<User> users = this.userRepo.findAll();
      return users.stream().anyMatch(user -> user.getEmail().equals(email) && user.getPassword().equals(password));
 
+
+    }
+
+    public UserDTO convertToUserDTO(User user){
+        UserDTO userdto = new UserDTO();
+        userdto.setId(user.getId());
+        userdto.setUsername(user.getUsername());
+        userdto.setEmail(user.getEmail());
+        userdto.setPassword(user.getPassword());
+        if (user.getProject() != null && !user.getProject().isEmpty()) {
+            Project project = user.getProject().iterator().next();
+            userdto.setProjectId(project.getId());
+        }
+
+        return userdto;
+    }
+
+
+    public User convertToUser(UserDTO userdto){
+        User user = new User();
+        user.setId(userdto.getId());
+        user.setUsername(userdto.getUsername());
+        user.setEmail(userdto.getEmail());
+        user.setPassword(userdto.getPassword());
+        user.setProject(projectService.getProjectById(userdto.getProjectId()));
+
+        return user;
     }
 }

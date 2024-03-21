@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 
@@ -20,7 +21,7 @@ public class ProjectService {
     }
 
     // Récupération d'un projet grâce à son id
-    public Optional<Project> getProjectById(Long id) {
+    public Set<Project> getProjectById(Long id) {
         return this.projectRepo.findById(id);
     }
 
