@@ -1,11 +1,17 @@
 package com.example.fil_rouge_back.Model.Entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
+@Getter
+@Setter
 public class Task {
 
     // Constructeur sans paramètre
@@ -36,64 +42,5 @@ public class Task {
     /*
     private Project projectId;
     private Optional<User> userId;
-    */
-    
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public Float getEstimationHours() {
-        return estimationHours;
-    }
-
-    public void setEstimationHours(Float estimationHours) {
-        this.estimationHours = estimationHours;
-    }
-
-    /*
-    public Project getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Project projectId) {
-        this.projectId = projectId;
-    }
-
-    public Optional<User> getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Optional<User> userId) {
-        this.userId = userId;
-    }
     */
 }
