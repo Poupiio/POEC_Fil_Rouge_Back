@@ -1,15 +1,11 @@
 package com.example.fil_rouge_back.Model.Entity;
 
+
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
 
 @Entity
@@ -17,7 +13,7 @@ import jakarta.persistence.Id;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Task {
+public class TaskEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
@@ -26,8 +22,8 @@ public class Task {
     private String description;
     private Status status;
     private Float estimationHours;
-    /*
-    private Project projectId;
-    private Optional<User> userId;
-    */
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id", nullable = false)
+    private Project project;
 }
