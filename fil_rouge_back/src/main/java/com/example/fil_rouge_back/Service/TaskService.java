@@ -1,5 +1,6 @@
 package com.example.fil_rouge_back.Service;
 
+
 import com.example.fil_rouge_back.Model.Entity.TaskEntity;
 import com.example.fil_rouge_back.Model.Repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,7 @@ public class TaskService {
         task.setDescription(data.getDescription());
         task.setStatus(data.getStatus());
         task.setEstimationHours(data.getEstimationHours());
+        task.setProject(data.getProject());
 
         return this.createTask(task);
     }
@@ -52,5 +54,6 @@ public class TaskService {
     public void deleteTask(Long id) {
         this.repo.deleteById(id);
     }
+
 
 }

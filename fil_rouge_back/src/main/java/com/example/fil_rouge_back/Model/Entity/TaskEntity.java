@@ -20,6 +20,7 @@ public class TaskEntity {
 
     private String title;
     private String description;
+    @Enumerated(EnumType.STRING)
     private Status status;
     private Float estimationHours;
 
