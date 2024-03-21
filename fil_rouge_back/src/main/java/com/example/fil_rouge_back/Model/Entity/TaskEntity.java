@@ -1,33 +1,19 @@
 package com.example.fil_rouge_back.Model.Entity;
 
+
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
 @Entity
 @Getter
 @Setter
-public class TaskEntity {
-
-    // Constructeur sans paramètre
-    public TaskEntity(){}
-
-    // Constructeur avec tous les paramètres
-    public TaskEntity(Long id, String title, String description, Status status, Float estimationHours, Project project) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.status = status;
-        this.estimationHours = estimationHours;
-
-        this.project = project;
-       // this.userId = userId;
-
-
-    }
-
-
+@NoArgsConstructor
+@AllArgsConstructor
+public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;

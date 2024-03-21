@@ -27,13 +27,26 @@ public class TaskService {
         return this.repo.findById(id);
     }
 
+    // Récupérer une tâche grâce à son nom
+    public Optional<Task> findByTitle(String title) {
+        return this.repo.findByTitle(title);
+    }
+
     // Création d'une tâche
     public TaskEntity createTask(TaskEntity data) {
         return this.repo.save(data);
     }
 
     // Modification d'une tâche
-    
+    public Task updateTask(Long id, Task data) {
+        Task task = this.repo.findById(id).get();
+        task.setTitle(data.getTitle());
+        task.setDescription(data.getDescription());
+        task.setStatus(data.getStatus());
+        task.setEstimationHours(data.getEstimationHours());
+
+        return this.createTask(task);
+    }
 
     // Suppression d'une tâche
     public void deleteTask(Long id) {
