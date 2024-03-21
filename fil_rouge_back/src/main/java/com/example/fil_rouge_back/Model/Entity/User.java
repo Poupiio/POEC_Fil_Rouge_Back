@@ -23,6 +23,6 @@ public class User {
     private String password;
     private  String email;
 
-    @OneToMany(mappedBy = "userId",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private Set<Project> project = new HashSet<>();
 }

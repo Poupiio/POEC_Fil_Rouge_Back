@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -37,10 +38,13 @@ public class UserController {
     }
 
 
-    @GetMapping("/login")
-    public Boolean login(@RequestParam String email, @RequestParam String password) {
+    @PostMapping("/login")
+    public boolean login(@RequestBody Map<String, String> credentials) {
+        String email = credentials.get("email");
+        String password = credentials.get("password");
         return this.userService.login(email, password);
     }
+
 
 
 
