@@ -1,9 +1,6 @@
 package com.example.fil_rouge_back.Model.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Task {
@@ -12,15 +9,15 @@ public class Task {
     public Task(){}
 
     // Constructeur avec tous les paramètres
-    public Task(Long id, String title, String description, Status status, Float estimationHours/*, Project projectId, Optional<User> userId*/) {
+    public Task(Long id, String title, String description, Status status, Float estimationHours, Project projectId/*, Optional<User> userId*/) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.status = status;
         this.estimationHours = estimationHours;
-        /* this.projectId = projectId;
-        this.userId = userId;
-        */
+        this.projectId = projectId;
+       // this.userId = userId;
+
     }
 
 
@@ -33,10 +30,11 @@ public class Task {
     private String description;
     private Status status;
     private Float estimationHours;
-    /*
+@ManyToOne
+@JoinColumn
     private Project projectId;
-    private Optional<User> userId;
-    */
+    //private Optional<User> userId;
+
     
 
     public Long getId() {
@@ -79,7 +77,7 @@ public class Task {
         this.estimationHours = estimationHours;
     }
 
-    /*
+
     public Project getProjectId() {
         return projectId;
     }
@@ -87,6 +85,7 @@ public class Task {
     public void setProjectId(Project projectId) {
         this.projectId = projectId;
     }
+      /*
 
     public Optional<User> getUserId() {
         return userId;

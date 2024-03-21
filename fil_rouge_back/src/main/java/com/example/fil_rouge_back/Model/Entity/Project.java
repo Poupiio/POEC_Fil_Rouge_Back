@@ -3,6 +3,7 @@ package com.example.fil_rouge_back.Model.Entity;
 import jakarta.persistence.*;
 import org.springframework.scheduling.config.Task;
 
+import java.util.Set;
 
 
 @Entity
@@ -16,16 +17,17 @@ public class Project() {
 
 
     private Long user_id;
-    @OneToMany(mappedBy = "project")
-    private <Set>Task tasks;
+    @OneToMany(mappedBy = "project",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+
+    private <Set>Task tasks = new HashSet<>();
 
 
 
-    public Project(Long id, String name, Long user_id, Task task) {
+    public Project(Long id, String name, Long user_id,<Set>Task tasks) {
         this.id = id;
         this.name = name;
         this.user_id = user_id;
-        this.task = task;
+        this.tasks = tasks;
     }
 
     public Project() {
