@@ -23,7 +23,7 @@ public class Project {
 
     private String name;
     private Long user_id;
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 
     private Set<TaskEntity> tasks = new HashSet<>();
 }
