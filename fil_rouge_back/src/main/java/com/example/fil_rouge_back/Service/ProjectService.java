@@ -38,7 +38,7 @@ public class ProjectService {
     public Project updateProject(Long id, Project data) {
         Project project = this.projectRepo.findById(id).get();
         project.setName(data.getName());
-        project.setUser_id(data.getUser_id());
+        project.setUserId(data.getUserId());
         return this.projectRepo.save(project);
     }
 

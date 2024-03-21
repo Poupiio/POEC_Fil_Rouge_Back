@@ -25,11 +25,6 @@ public class ProjectController {
         return this.projectService.getProjectById(id);
     }
 
-    @GetMapping("/name/{name}")
-    public Optional<Project> getProjectByName(@PathVariable String name) {
-        return this.projectService.findByName(name);
-    }
-
     @PostMapping
     public Project createProject(@RequestBody Project data) {
         return this.projectService.createProject(data);
