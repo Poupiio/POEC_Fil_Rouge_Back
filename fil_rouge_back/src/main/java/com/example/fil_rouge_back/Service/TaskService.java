@@ -27,6 +27,11 @@ public class TaskService {
         return this.repo.findById(id);
     }
 
+    // Récupérer une tâche grâce à son nom
+    public Optional<Task> findByTitle(String title) {
+        return this.repo.findByTitle(title);
+    }
+
     // Création d'une tâche
     public Task createTask(Task data) {
         return this.repo.save(data);
