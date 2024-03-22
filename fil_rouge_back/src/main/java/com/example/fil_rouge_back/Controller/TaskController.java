@@ -1,14 +1,13 @@
 package com.example.fil_rouge_back.Controller;
 
+import com.example.fil_rouge_back.Model.DTO.TaskDTO;
 import com.example.fil_rouge_back.Model.Entity.Project;
-import com.example.fil_rouge_back.Model.Entity.TaskEntity;
-import com.example.fil_rouge_back.Model.Repository.ProjectRepository;
+import com.example.fil_rouge_back.Service.ProjectService;
 import com.example.fil_rouge_back.Service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/project/{projectId}/task")
@@ -17,39 +16,48 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
     @Autowired
-    private ProjectRepository projectRepo;
+    private ProjectService projectService;
 
 
     // Récupérer toutes les tâches
     @GetMapping
-    public List<TaskEntity> getAllTasks() {
-        return this.taskService.getAllTasks();
+    public List<TaskDTO> getAllTasks(@PathVariable Long projectId) {
+        // Récupération de l'id du projet
+        this.projectService.getProjectById(projectId).get();
+
+        return this.taskService.findAllTasksByProjectId(projectId);
     }
 
     // Récupérer une tâche grâce à son id
-    @GetMapping("/{id}")
-    public Optional<TaskEntity> getTaskById(@PathVariable Long id) {
-        return this.taskService.getTaskById(id);
+    // ATTENTION : le nom du paramètre dans la route doit être LE MÊME que le paramètre de requête : {taskId} = Long taskId)
+    @GetMapping("/{taskId}")
+    public TaskDTO getTaskByProjectIdAndId(@PathVariable Long projectId, @PathVariable Long taskId) {
+        return taskService.findTaskByProjectIdAndId(projectId, taskId);
     }
 
     // Récupérer une tâche grâce à son nom
     @GetMapping("/title/{title}")
-    public Optional<TaskEntity> findByTitle(@PathVariable String title) {
+    public TaskDTO findByTitle(@PathVariable String title) {
         return taskService.findByTitle(title);
     }
 
     // Créer une nouvelle tâche
     @PostMapping("/create")
-    public TaskEntity createTask(@PathVariable Long projectId, @RequestBody TaskEntity task) {
+    public TaskDTO createTask(@PathVariable Long projectId, @RequestBody TaskDTO task) {
         // Récupération de l'id du projet
-        // Project p = this.projectRepo.findById(projectId).get();
-        // task.setProject(p);
-        return this.taskService.createTask(task);
+        //this.projectService.getProjectById(projectId).get();
+        //System.out.println("Côté controller : " + projectId);
+        Project project = projectService.getProjectById(projectId)
+                .orElseThrow(() -> new RuntimeException("Projet non trouvé"));
+        Long projectID = project.getId();
+        System.out.println("ID du projet côté controller : " + projectID);
+
+        return this.taskService.createTask(projectID, task);
     }
 
     // Modifier une tâche grâce à son id
     @PutMapping("/{id}")
-    public TaskEntity updateTask(@PathVariable Long id, @RequestBody TaskEntity body) {
+    public TaskDTO updateTask(@PathVariable Long id, @RequestBody TaskDTO body) {
         return this.taskService.updateTask(id, body);
     }
 
