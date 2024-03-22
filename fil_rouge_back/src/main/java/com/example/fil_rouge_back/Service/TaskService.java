@@ -40,13 +40,7 @@ public class TaskService {
     // Récupération d'une tache grâce à son id
     public TaskDTO getTaskById(Long id) {
         Optional<TaskEntity> taskOptional = this.repo.findById(id);
-        if (taskOptional.isPresent())  {
-            return convertToTaskDTO(taskOptional.get());
-        } else {
-            return ((String) "coucou"); // ou vous pouvez renvoyer une exception ou un message approprié
-            // return new TaskDTO("L'id recherché n'existe pas");
-        }
-        //return convertToTaskDTO(this.repo.findById(id).get());
+        return convertToTaskDTO(this.repo.findById(id).get());
     }
 
     // Récupérer une tâche grâce à son nom
