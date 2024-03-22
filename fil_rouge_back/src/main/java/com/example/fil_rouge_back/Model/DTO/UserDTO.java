@@ -21,6 +21,6 @@ public class UserDTO {
 
     private String username;
     private String password;
-    private  String email;
+    private String email;
     private Long projectId;
 }

@@ -1,21 +1,15 @@
 package com.example.fil_rouge_back.Service;
 
 import com.example.fil_rouge_back.Model.DTO.ProjectDTO;
-import com.example.fil_rouge_back.Model.DTO.UserDTO;
 import com.example.fil_rouge_back.Model.Entity.Project;
-import com.example.fil_rouge_back.Model.Entity.User;
 import com.example.fil_rouge_back.Model.Repository.ProjectRepository;
-import com.example.fil_rouge_back.Model.Repository.UserRepository;
 
-import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 import java.util.Optional;
-import java.util.Set;
 
 
 @Service
@@ -33,14 +27,14 @@ public class ProjectService {
 
 
     // Récupération de tous les projets
-    public List<Project> getAllProjects() {
-        return this.projectRepo.findAll();
+    public List<ProjectDTO> getAllProjects() {
+        return this.projectRepo.findAll().stream().map(this::convertToProjectDTO).toList();
     }
 
     // Récupération d'un projet grâce à son id
-    public Set<Project> getProjectById(Long id) {
-        Optional<Project> optionalProject = projectRepo.findById(id);
-        return optionalProject.map(Collections::singleton).orElse(Collections.emptySet());
+    public Optional<ProjectDTO> getProjectById(Long id) {
+
+    return this.projectRepo.findById(id).map(this::convertToProjectDTO);
     }
 
 

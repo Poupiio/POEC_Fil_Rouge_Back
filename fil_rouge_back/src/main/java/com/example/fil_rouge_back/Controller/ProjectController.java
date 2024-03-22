@@ -3,13 +3,12 @@ package com.example.fil_rouge_back.Controller;
 import com.example.fil_rouge_back.Model.DTO.ProjectDTO;
 import com.example.fil_rouge_back.Model.Entity.Project;
 import com.example.fil_rouge_back.Service.ProjectService;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 
 @NoArgsConstructor
 @RestController
@@ -23,13 +22,13 @@ public class ProjectController {
     }
 
     @GetMapping
-    public List<Project> getAllProjects() {
+    public List<ProjectDTO> getAllProjects() {
         return this.projectService.getAllProjects();
 
     }
 
     @GetMapping("/{id}")
-    public Set<Project> getProjectById(@PathVariable Long id) {
+    public Optional<ProjectDTO> getProjectById(@PathVariable Long id) {
         return this.projectService.getProjectById(id);
     }
 

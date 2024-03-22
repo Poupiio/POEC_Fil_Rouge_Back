@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
+import java.util.Set;
+
 @Service
 public class UserService {
 
@@ -93,7 +95,7 @@ public class UserService {
         user.setUsername(userdto.getUsername());
         user.setEmail(userdto.getEmail());
         user.setPassword(userdto.getPassword());
-        user.setProject(projectService.getProjectById(userdto.getProjectId()));
+        user.setProject((Set<Project>) projectService.getProjectById(userdto.getProjectId()).orElse(null));
 
         return user;
     }
