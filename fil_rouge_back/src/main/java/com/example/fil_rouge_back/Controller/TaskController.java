@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/project/{projectId}/task")
@@ -30,9 +29,10 @@ public class TaskController {
     }
 
     // Récupérer une tâche grâce à son id
-    @GetMapping("/{id}")
-    public TaskDTO getTaskById(@PathVariable Long id) {
-        return this.taskService.getTaskById(id);
+    // ATTENTION : le nom du paramètre dans la route doit être LE MÊME que le paramètre de requête : {taskId} = Long taskId)
+    @GetMapping("/{taskId}")
+    public TaskDTO getTaskByProjectIdAndId(@PathVariable Long projectId, @PathVariable Long taskId) {
+        return taskService.findTaskByProjectIdAndId(projectId, taskId);
     }
 
     // Récupérer une tâche grâce à son nom
