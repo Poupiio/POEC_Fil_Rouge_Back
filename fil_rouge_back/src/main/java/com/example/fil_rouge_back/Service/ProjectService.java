@@ -2,14 +2,17 @@ package com.example.fil_rouge_back.Service;
 
 import com.example.fil_rouge_back.Model.DTO.ProjectDTO;
 import com.example.fil_rouge_back.Model.Entity.Project;
+import com.example.fil_rouge_back.Model.Entity.User;
 import com.example.fil_rouge_back.Model.Repository.ProjectRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -27,14 +30,53 @@ public class ProjectService {
 
 
     // Récupération de tous les projets
-    public List<ProjectDTO> getAllProjects() {
+    /*public List<ProjectDTO> getAllProjects(Long userId) {
         return this.projectRepo.findAll().stream().map(this::convertToProjectDTO).toList();
     }
 
-    // Récupération d'un projet grâce à son id
-    public Optional<ProjectDTO> getProjectById(Long id) {
+     */
+    public List<ProjectDTO> getAllProjects(Long userId) {
+        // Récupérer l'utilisateur par son ID
+        User user = userService.getUserById(userId);
+        if (user == null) {
+            // Gérer le cas où l'utilisateur n'existe pas (vous pouvez lancer une exception ou retourner une liste vide)
+            return Collections.emptyList(); // ou lancez une exception appropriée
+        }
 
-    return this.projectRepo.findById(id).map(this::convertToProjectDTO);
+        // Récupérer tous les projets associés à l'utilisateur
+        List<Project> userProjects = projectRepo.findByUserId(userId);
+
+        // Convertir les projets en DTO
+        List<ProjectDTO> projectDTOs = userProjects.stream()
+                .map(this::convertToProjectDTO)
+                .collect(Collectors.toList());
+
+        return projectDTOs;
+    }
+
+    // Récupération d'un projet grâce à son id
+    public ProjectDTO getProjectById(Long id) {
+        /*Optional<Project> projectOptional = this.projectRepo.findById(id);
+        if (projectOptional.isPresent()) {
+            ProjectDTO projectDTO = convertToProjectDTO(projectOptional.get());
+            return Optional.of(projectDTO);
+        } else {
+            return Optional.empty();
+        }
+         */
+        return this.convertToProjectDTO(this.projectRepo.getProjectById(id));
+    }
+
+    public Project getProjecNormaltById(Long id) {
+        /*Optional<Project> projectOptional = this.projectRepo.findById(id);
+        if (projectOptional.isPresent()) {
+            ProjectDTO projectDTO = convertToProjectDTO(projectOptional.get());
+            return Optional.of(projectDTO);
+        } else {
+            return Optional.empty();
+        }
+         */
+        return this.projectRepo.getProjectById(id);
     }
 
 
@@ -44,11 +86,12 @@ public class ProjectService {
     }
 
     // Modification d'un projet
-    public Project updateProject(Long id, Project data) {
+    public ProjectDTO updateProject(Long id, ProjectDTO data) {
         Project project = this.projectRepo.findById(id).get();
         project.setName(data.getName());
+        project.setUser(this.userService.getUserById(id));
 
-        return this.projectRepo.save(project);
+        return convertToProjectDTO(projectRepo.save(project));
     }
 
     // Suppression d'un projet
@@ -57,6 +100,11 @@ public class ProjectService {
     }
 
     public ProjectDTO convertToProjectDTO(Project project) {
+        // S'il n'y a aucun user relié au projet, je return une exception
+        if (project.getUser() == null) {
+            throw new IllegalArgumentException("Aucun utilisateur n'est lié à ce projet");
+        }
+
         ProjectDTO projectDTO = new ProjectDTO();
         projectDTO.setId(project.getId());
         projectDTO.setName(project.getName());

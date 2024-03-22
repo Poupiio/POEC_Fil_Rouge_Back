@@ -1,6 +1,7 @@
 package com.example.fil_rouge_back.Service;
 
 
+import com.example.fil_rouge_back.Model.DTO.ProjectDTO;
 import com.example.fil_rouge_back.Model.DTO.TaskDTO;
 import com.example.fil_rouge_back.Model.Entity.Project;
 import com.example.fil_rouge_back.Model.Entity.TaskEntity;
@@ -8,6 +9,7 @@ import com.example.fil_rouge_back.Model.Repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -43,20 +45,39 @@ public class TaskService {
         if (taskOptional.isPresent()) {
             return convertToTaskDTO(taskOptional.get());
         } else {
-            throw new IllegalArgumentException("La tâche que vous recherchez n'existe pas");
+            throw new IllegalArgumentException("La tâche recherchée n'existe pas");
         }
     }
 
 
     // Récupérer une tâche grâce à son nom
     public TaskDTO findByTitle(String title) {
-        return convertToTaskDTO(this.repo.findByTitle(title).get());
+        //return convertToTaskDTO(this.repo.findByTitle(title).get());
+        Optional<TaskEntity> optionalTask = this.repo.findByTitle(title);
+        if (optionalTask.isPresent()) {
+            return convertToTaskDTO(optionalTask.get());
+        } else {
+            // Gérer le cas où la tâche n'est pas trouvée
+            // Par exemple, retourner null ou une DTO spéciale pour indiquer qu'aucune tâche n'a été trouvée
+            return null;
+        }
     }
 
     // Création d'une tâche
-    public TaskDTO createTask(Long projectId, TaskDTO data) {
+    public TaskDTO createTask(Long projectId, TaskDTO taskDto) {
         // Je convertis au format TaskDTO la tâche que je souhaite créer, puis la convertis en TaskEntity en lui passant l'id du projet
-        return convertToTaskDTO(this.repo.save(convertToTask(data, projectId)));
+        //return convertToTaskDTO(this.repo.save(convertToTask(taskDto, projectId)));
+
+        // Créer une nouvelle tâche
+        TaskEntity taskEntity = convertToTask(taskDto, projectId);
+
+        // Enregistrer la tâche dans le repository
+        TaskEntity savedTask = repo.save(taskEntity);
+
+
+
+        // Convertir la tâche sauvegardée en DTO et la retourner
+        return convertToTaskDTO(savedTask);
     }
 
     // Modification d'une tâche
@@ -87,14 +108,29 @@ public class TaskService {
         taskDTO.setDescription(task.getDescription());
         taskDTO.setStatus(task.getStatus());
         taskDTO.setEstimationHours(task.getEstimationHours());
+        taskDTO.setProjectId(task.getProject().getId());
 
         return taskDTO;
     }
 
-    // Conversion d'un TaskDTO en TaskEntity
+    public TaskEntity convertToTask(TaskDTO taskDTO, Long projectId) {
+
+        return  new TaskEntity(
+                taskDTO.getId(),
+                taskDTO.getTitle(),
+                taskDTO.getDescription(),
+                taskDTO.getStatus(),
+                taskDTO.getEstimationHours(),
+                this.projectService.getProjecNormaltById(projectId)
+        );
+    }
+
+
+    /*
+        // Conversion d'un TaskDTO en TaskEntity
     public TaskEntity convertToTask(TaskDTO taskDTO, Long projectId) {
         // J'instancie un objet de type Task auquel j'attribue les valeurs des propriétés de TaskDTO
-        TaskEntity task = new TaskEntity();
+        /*TaskEntity task = new TaskEntity();
         task.setId(taskDTO.getId());
         task.setTitle(taskDTO.getTitle());
         task.setDescription(taskDTO.getDescription());
@@ -102,10 +138,10 @@ public class TaskService {
         task.setEstimationHours(taskDTO.getEstimationHours());
 
         // J'utilise projectService pour me donner accès à la fonction getProjectById() pour récupérer le projet
-        Optional<Project> projectOptional = projectService.getProjectById(projectId);
+        Optional<Project> projectOptional = Optional.ofNullable(projectService.getProjectById(taskDTO.getProjectId()));
 
         // Si le projet existe, je crée l'attribut "project" de TaskEntity grâce à l'id du projet récupéré
-        if (projectOptional.isPresent()) {
+        /*if (projectOptional.isPresent()) {
             task.setProject(projectOptional.get());
 
             // Sinon je lance une exception
@@ -113,8 +149,37 @@ public class TaskService {
             throw new IllegalArgumentException("Projet non trouvé");
         }
 
-        return task;
+
+    // Vérificatin de l'id du projet (s'il existe ou non)
+        if (projectId == null) {
+        throw new IllegalArgumentException("ID du projet non spécifié");
     }
+        System.out.println("Id du projet : " + projectId);
+
+    // Créez une nouvelle tâche en utilisant les données de TaskDTO et de ProjectDTO
+    TaskEntity task = new TaskEntity();
+        task.setId(taskDTO.getId());
+        task.setTitle(taskDTO.getTitle());
+        task.setDescription(taskDTO.getDescription());
+        task.setStatus(taskDTO.getStatus());
+        task.setEstimationHours(taskDTO.getEstimationHours());
+
+    // Créez un objet Project correspondant au ProjectDTO
+    var projectDTO = projectService.convertToProjectDTO(projectService.getProjectById(projectId));
+
+
+
+    //project.setId(projectDTO.getId());
+    //project.setName(projectDTO.getName());
+    // Si vous avez d'autres champs dans ProjectDTO, assurez-vous de les définir ici
+
+    // Définissez le projet sur la tâche
+        task.setProject(projectDTO);
+
+        return task;
+}
+*/
+
 
 
 }

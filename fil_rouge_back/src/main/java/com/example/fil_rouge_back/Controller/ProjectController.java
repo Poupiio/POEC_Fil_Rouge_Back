@@ -21,14 +21,14 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
-    @GetMapping
-    public List<ProjectDTO> getAllProjects() {
-        return this.projectService.getAllProjects();
-
+    // Récupération de tous les projets appartenant à un utilisateur
+    @GetMapping("/user/{userId}")
+    public List<ProjectDTO> getAllProjects(@PathVariable Long userId) {
+        return this.projectService.getAllProjects(userId);
     }
 
     @GetMapping("/{id}")
-    public Optional<ProjectDTO> getProjectById(@PathVariable Long id) {
+    public ProjectDTO getProjectById(@PathVariable Long id) {
         return this.projectService.getProjectById(id);
     }
 
@@ -38,8 +38,8 @@ public class ProjectController {
     }
 
     @PutMapping("/{id}")
-    public Project updateProject(@PathVariable Long id, @RequestBody Project data) {
-        return this.projectService.updateProject(id, data);
+    public ProjectDTO updateProject(@PathVariable Long id, @RequestBody ProjectDTO projectDto) {
+        return this.projectService.updateProject(id, projectDto);
     }
 
     @DeleteMapping("/{id}")

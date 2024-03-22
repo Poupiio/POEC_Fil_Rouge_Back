@@ -20,4 +20,5 @@ public class TaskDTO {
     @Enumerated(EnumType.STRING)
     private Status status;
     private Float estimationHours;
+    private Long projectId;
 }

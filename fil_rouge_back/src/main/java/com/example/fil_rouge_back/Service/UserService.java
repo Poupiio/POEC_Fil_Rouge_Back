@@ -95,7 +95,7 @@ public class UserService {
         user.setUsername(userdto.getUsername());
         user.setEmail(userdto.getEmail());
         user.setPassword(userdto.getPassword());
-        user.setProject((Set<Project>) projectService.getProjectById(userdto.getProjectId()).orElse(null));
+        user.setProject((Set<Project>) projectService.getProjectById(userdto.getProjectId()));
 
         return user;
     }
