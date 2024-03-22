@@ -1,5 +1,6 @@
 package com.example.fil_rouge_back.Controller;
 
+import com.example.fil_rouge_back.Model.DTO.UserDTO;
 import com.example.fil_rouge_back.Model.Entity.User;
 import com.example.fil_rouge_back.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,32 +18,31 @@ public class UserController {
 
     // Récupérer tous les utilisateurs
     @GetMapping
-    public List<User> getAllUsers() {
+    public List<UserDTO> getAllUsers() {
         return this.userService.getAllUsers();
     }
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id) {
-        return this.userService.getUserById(id);
+    public UserDTO getUserById(@PathVariable Long id) {
+        return this.userService.getUserDTOById(id);
     }
     @PostMapping
-    public User createUser(@RequestBody User data) {
+    public UserDTO createUser(@RequestBody UserDTO data) {
         return this.userService.createUser(data);
     }
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User data) {
+    public UserDTO updateUser(@PathVariable Long id, @RequestBody UserDTO data) {
         return this.userService.updateUser(id, data);
     }
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
-       this.userService.deleteUser(id);
+    public void deleteUserDTO(@PathVariable Long id) {
+       this.userService.deleteUserDTO(id);
     }
 
 
     @PostMapping("/login")
-    public boolean login(@RequestBody Map<String, String> credentials) {
-        String email = credentials.get("email");
-        String password = credentials.get("password");
-        return this.userService.login(email, password);
+    public boolean login(@RequestBody UserDTO userdto) {
+        return this.userService.login(userdto);
+
     }
 
 
