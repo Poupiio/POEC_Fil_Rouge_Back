@@ -49,8 +49,5 @@ public class UserController {
     public UserDTO Register(@RequestBody UserDTO userDTO){
         return this.userService.register(userDTO);
     }
-
-
-
-
+    
 }
