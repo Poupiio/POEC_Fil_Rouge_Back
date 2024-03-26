@@ -1,5 +1,6 @@
 package com.example.fil_rouge_back.Controller;
 
+import com.example.fil_rouge_back.Model.DTO.LoginDTO;
 import com.example.fil_rouge_back.Model.DTO.UserDTO;
 import com.example.fil_rouge_back.Model.Entity.User;
 import com.example.fil_rouge_back.Service.UserService;
@@ -40,9 +41,13 @@ public class UserController {
 
 
     @PostMapping("/login")
-    public boolean login(@RequestBody UserDTO userdto) {
-        return this.userService.login(userdto);
+    public LoginDTO login(@RequestBody LoginDTO loginDTO) {
+        return this.userService.login(loginDTO);
 
+    }
+    @PostMapping("/register")
+    public UserDTO Register(@RequestBody UserDTO userDTO){
+        return this.userService.register(userDTO);
     }
 
 
