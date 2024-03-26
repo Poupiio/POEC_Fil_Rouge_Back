@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -23,6 +22,7 @@ public class ProjectService {
     }
 
     private UserService userService;
+    private TaskService taskService;
 
     @Autowired
     private ProjectRepository projectRepo;
@@ -30,11 +30,7 @@ public class ProjectService {
 
 
     // Récupération de tous les projets
-    /*public List<ProjectDTO> getAllProjects(Long userId) {
-        return this.projectRepo.findAll().stream().map(this::convertToProjectDTO).toList();
-    }
 
-     */
     public List<ProjectDTO> getAllProjects(Long userId) {
         // Récupérer l'utilisateur par son ID
         User user = userService.getUserById(userId);
@@ -56,27 +52,12 @@ public class ProjectService {
 
     // Récupération d'un projet grâce à son id
     public ProjectDTO getProjectById(Long id) {
-        /*Optional<Project> projectOptional = this.projectRepo.findById(id);
-        if (projectOptional.isPresent()) {
-            ProjectDTO projectDTO = convertToProjectDTO(projectOptional.get());
-            return Optional.of(projectDTO);
-        } else {
-            return Optional.empty();
-        }
-         */
-        return this.convertToProjectDTO(this.projectRepo.getProjectById(id));
+        return this.convertToProjectDTO(this.projectRepo.findById(id).orElse(new Project()));
     }
 
-    public Project getProjecNormaltById(Long id) {
-        /*Optional<Project> projectOptional = this.projectRepo.findById(id);
-        if (projectOptional.isPresent()) {
-            ProjectDTO projectDTO = convertToProjectDTO(projectOptional.get());
-            return Optional.of(projectDTO);
-        } else {
-            return Optional.empty();
-        }
-         */
-        return this.projectRepo.getProjectById(id);
+    public Project getNormalProjectById(Long id) {
+       // Récupération d'un projet de type Projet
+        return this.projectRepo.findById(id).orElse(new Project());
     }
 
 
@@ -86,12 +67,15 @@ public class ProjectService {
     }
 
     // Modification d'un projet
-    public ProjectDTO updateProject(Long id, ProjectDTO data) {
-        Project project = this.projectRepo.findById(id).get();
-        project.setName(data.getName());
-        project.setUser(this.userService.getUserById(id));
+    public ProjectDTO updateProject(Long id, ProjectDTO projectDto) {
+        // Je récupère l'id du projet
+        Project project = this.getNormalProjectById(id);
 
-        return convertToProjectDTO(projectRepo.save(project));
+        // Je set seulement le name (car on ne modifie ni l'id ni l'id du user)
+        project.setName(projectDto.getName());
+
+        // Je le sauvegarde en base en le convertissant en ProjectDTO
+        return convertToProjectDTO(this.projectRepo.save(project));
     }
 
     // Suppression d'un projet
@@ -114,10 +98,9 @@ public class ProjectService {
 
     public Project convertToProject(ProjectDTO projectDTO) {
         Project project = new Project();
+        project.setId(projectDTO.getId());
         project.setName(projectDTO.getName());
         project.setUser(userService.getUserById(projectDTO.getUserId()));
-        project.setId(projectDTO.getId());
-
 
         return project;
     }

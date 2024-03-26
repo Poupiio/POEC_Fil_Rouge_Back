@@ -21,8 +21,8 @@ public class User {
     private Long Id;
     private String username;
     private String password;
-    private  String email;
+    private String email;
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Project> project = new HashSet<>();
 }

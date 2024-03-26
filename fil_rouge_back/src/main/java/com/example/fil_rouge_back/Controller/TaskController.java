@@ -39,11 +39,6 @@ public class TaskController {
     }
 
     // Récupérer une tâche grâce à son nom
-    /* @GetMapping("/title/{title}")
-    public TaskDTO findByTitle(@PathVariable String title) {
-        return taskService.findByTitle(title);
-    }
-     */
     @GetMapping("/title/{encodedTitle}")
     public TaskDTO findByTitle(@PathVariable("encodedTitle") String encodedTitle) {
         // J'utilise un décodeur d'URL afin de pouvoir rechercher un titre qui contient des espaces
@@ -56,23 +51,13 @@ public class TaskController {
     // Créer une nouvelle tâche
     @PostMapping("/create")
     public TaskDTO createTask(@PathVariable Long projectId, @RequestBody TaskDTO task) {
-        // Récupération de l'id du projet
-        //this.projectService.getProjectById(projectId).get();
-        //System.out.println("Côté controller : " + projectId);
-        //ProjectDTO project = projectService.getProjectById(projectId);
-                //.orElseThrow(() -> new RuntimeException("Projet non trouvé"));
-        //Long projectID = project.getId();
-        //System.out.println("ID du projet côté controller : " + projectID);
-
-        //return this.taskService.createTask(projectID, task);
-
-        // Vérifier si le projet existe
+        // Je vérifie si le projet existe
         ProjectDTO project = projectService.getProjectById(projectId);
         if (project == null) {
             throw new RuntimeException("Projet non trouvé");
         }
 
-        // Créer la tâche avec l'ID du projet
+        // Si le projet est bien trouvé, je crée la tâche avec l'id du projet
         return this.taskService.createTask(projectId, task);
     }
 
