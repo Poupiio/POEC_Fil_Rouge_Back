@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 
 @Getter
 @Setter
@@ -22,5 +24,5 @@ public class UserDTO {
     private String username;
     private String password;
     private String email;
-    private Long projectId;
+    private Set<Long> projectId;
 }

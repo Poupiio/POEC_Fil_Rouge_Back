@@ -24,7 +24,7 @@ public class TaskEntity {
     private Status status;
     private Float estimationHours;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 }

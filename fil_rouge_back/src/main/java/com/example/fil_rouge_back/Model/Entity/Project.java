@@ -21,19 +21,14 @@ public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
-
-
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
-
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<TaskEntity> tasks = new HashSet<>();
-
-
 
 }
 

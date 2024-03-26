@@ -49,34 +49,25 @@ public class TaskService {
         }
     }
 
-
     // Récupérer une tâche grâce à son nom
     public TaskDTO findByTitle(String title) {
-        //return convertToTaskDTO(this.repo.findByTitle(title).get());
         Optional<TaskEntity> optionalTask = this.repo.findByTitle(title);
         if (optionalTask.isPresent()) {
             return convertToTaskDTO(optionalTask.get());
         } else {
-            // Gérer le cas où la tâche n'est pas trouvée
-            // Par exemple, retourner null ou une DTO spéciale pour indiquer qu'aucune tâche n'a été trouvée
             return null;
         }
     }
 
     // Création d'une tâche
     public TaskDTO createTask(Long projectId, TaskDTO taskDto) {
-        // Je convertis au format TaskDTO la tâche que je souhaite créer, puis la convertis en TaskEntity en lui passant l'id du projet
-        //return convertToTaskDTO(this.repo.save(convertToTask(taskDto, projectId)));
-
-        // Créer une nouvelle tâche
+        // Je crée une nouvelle tâche de type TaskEntity en lui passant en paramètre la taskDto
         TaskEntity taskEntity = convertToTask(taskDto, projectId);
 
-        // Enregistrer la tâche dans le repository
+        // Je sauvegarde d'abord la nouvelle tâche
         TaskEntity savedTask = repo.save(taskEntity);
 
-
-
-        // Convertir la tâche sauvegardée en DTO et la retourner
+        // Pour la convertir en TaskDTO
         return convertToTaskDTO(savedTask);
     }
 
@@ -113,73 +104,19 @@ public class TaskService {
         return taskDTO;
     }
 
-    public TaskEntity convertToTask(TaskDTO taskDTO, Long projectId) {
-
-        return  new TaskEntity(
-                taskDTO.getId(),
-                taskDTO.getTitle(),
-                taskDTO.getDescription(),
-                taskDTO.getStatus(),
-                taskDTO.getEstimationHours(),
-                this.projectService.getProjecNormaltById(projectId)
-        );
-    }
-
-
-    /*
-        // Conversion d'un TaskDTO en TaskEntity
+    // Conversion d'un TaskDTO en TaskEntity
     public TaskEntity convertToTask(TaskDTO taskDTO, Long projectId) {
         // J'instancie un objet de type Task auquel j'attribue les valeurs des propriétés de TaskDTO
-        /*TaskEntity task = new TaskEntity();
+        TaskEntity task = new TaskEntity();
         task.setId(taskDTO.getId());
         task.setTitle(taskDTO.getTitle());
         task.setDescription(taskDTO.getDescription());
         task.setStatus(taskDTO.getStatus());
         task.setEstimationHours(taskDTO.getEstimationHours());
-
-        // J'utilise projectService pour me donner accès à la fonction getProjectById() pour récupérer le projet
-        Optional<Project> projectOptional = Optional.ofNullable(projectService.getProjectById(taskDTO.getProjectId()));
-
-        // Si le projet existe, je crée l'attribut "project" de TaskEntity grâce à l'id du projet récupéré
-        /*if (projectOptional.isPresent()) {
-            task.setProject(projectOptional.get());
-
-            // Sinon je lance une exception
-        } else {
-            throw new IllegalArgumentException("Projet non trouvé");
-        }
-
-
-    // Vérificatin de l'id du projet (s'il existe ou non)
-        if (projectId == null) {
-        throw new IllegalArgumentException("ID du projet non spécifié");
-    }
-        System.out.println("Id du projet : " + projectId);
-
-    // Créez une nouvelle tâche en utilisant les données de TaskDTO et de ProjectDTO
-    TaskEntity task = new TaskEntity();
-        task.setId(taskDTO.getId());
-        task.setTitle(taskDTO.getTitle());
-        task.setDescription(taskDTO.getDescription());
-        task.setStatus(taskDTO.getStatus());
-        task.setEstimationHours(taskDTO.getEstimationHours());
-
-    // Créez un objet Project correspondant au ProjectDTO
-    var projectDTO = projectService.convertToProjectDTO(projectService.getProjectById(projectId));
-
-
-
-    //project.setId(projectDTO.getId());
-    //project.setName(projectDTO.getName());
-    // Si vous avez d'autres champs dans ProjectDTO, assurez-vous de les définir ici
-
-    // Définissez le projet sur la tâche
-        task.setProject(projectDTO);
+        // Ici je fais appel au projectService me donnant accès à getNormalProjectById() pour obtenir l'id du projet de type Projet
+        task.setProject(projectService.getNormalProjectById(projectId));
 
         return task;
-}
-*/
-
-
+    }
 
 }
