@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.config.Task;
 
 import java.util.HashSet;
@@ -20,12 +21,15 @@ public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
-
     private String name;
-    private Long userId;
-    @OneToMany(mappedBy = "project",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId", nullable = false)
+    private User user;
+
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<TaskEntity> tasks = new HashSet<>();
+
 }
 
 

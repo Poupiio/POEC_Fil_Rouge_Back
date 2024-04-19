@@ -1,6 +1,7 @@
 package com.example.fil_rouge_back.Model.Repository;
 
 import com.example.fil_rouge_back.Model.Entity.Project;
+import com.example.fil_rouge_back.Model.Entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,6 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ProjectRepository extends JpaRepository<Project,Long> {
-    List<Project> findByUserId(Long userId);
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByEmailAndPassword(String email, String password);
 }
