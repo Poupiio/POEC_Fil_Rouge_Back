@@ -5,8 +5,11 @@ import com.example.fil_rouge_back.Model.DTO.UserDTO;
 import com.example.fil_rouge_back.Model.Entity.User;
 import com.example.fil_rouge_back.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.security.sasl.AuthenticationException;
 import java.util.List;
 import java.util.Map;
 
@@ -41,10 +44,16 @@ public class UserController {
 
 
     @PostMapping("/login")
-    public LoginDTO login(@RequestBody LoginDTO loginDTO) {
-        return this.userService.login(loginDTO);
-
+    public ResponseEntity<LoginDTO> login(@RequestBody LoginDTO loginDTO) throws AuthenticationException {
+        LoginDTO response = this.userService.login(loginDTO);
+        System.out.println("Login:" + response);
+        if (response != null) {
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // Retourne un code 401 Unauthorized si la connexion échoue
+        }
     }
+
     @PostMapping("/register")
     public UserDTO Register(@RequestBody UserDTO userDTO){
         return this.userService.register(userDTO);

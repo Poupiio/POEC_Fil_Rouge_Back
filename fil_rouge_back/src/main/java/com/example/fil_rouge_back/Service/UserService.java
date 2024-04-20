@@ -3,15 +3,12 @@ package com.example.fil_rouge_back.Service;
 import com.example.fil_rouge_back.Model.DTO.LoginDTO;
 import com.example.fil_rouge_back.Model.DTO.ProjectDTO;
 import com.example.fil_rouge_back.Model.DTO.UserDTO;
-import com.example.fil_rouge_back.Model.Entity.Project;
 import com.example.fil_rouge_back.Model.Entity.User;
 import com.example.fil_rouge_back.Model.Repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+import javax.security.sasl.AuthenticationException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -21,12 +18,14 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private  UserRepository userRepo;
+    private JwtService jwtService;
 
     private ProjectService projectService;
 
     @Autowired
-    public void setUserRepo(UserRepository userRepo) {
+    public UserService(UserRepository userRepo, JwtService jwtService) {
         this.userRepo = userRepo;
+        this.jwtService = jwtService;
     }
 
     @Autowired
@@ -53,7 +52,16 @@ public class UserService {
 
     // Création d'un utilisateur
     public UserDTO createUser(UserDTO userDTO) {
-        return convertToUserDTO(this.userRepo.save(convertToUser(userDTO)));
+        User user = convertToUser(userDTO);
+        User savedUser = this.userRepo.save(user);
+
+        // Générer un token JWT pour le nouvel utilisateur
+        String token = jwtService.generateToken(savedUser.getEmail());
+        userDTO.setToken(token);
+        System.out.println("UserService create User:" + token);
+
+
+        return convertToUserDTO(savedUser);
     }
 
     // Modification d'un utilisateur
@@ -105,13 +113,20 @@ public class UserService {
         return user;
     }
 
-    public LoginDTO login(LoginDTO loginDTO) {
-        Optional<User> userOptional = userRepo.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword());
 
+    // Modifiez votre service utilisateur
+    public LoginDTO login(LoginDTO loginDTO) throws AuthenticationException {
+        Optional<User> userOptional = userRepo.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword());
+        System.out.println("UserService login:" + userOptional);
         if (userOptional.isPresent()) {
-            return convertToLoginDTO(userOptional.get());
+            User user = userOptional.get();
+            String token = jwtService.generateToken(user.getEmail());
+            loginDTO.setToken(token);
+            System.out.println("UserService login:" + token);
+            return loginDTO;
         } else {
-            return null; // ou une autre indication selon votre logique
+            System.out.println("UserService login: User not found for email: " + loginDTO.getEmail());
+            throw new AuthenticationException("Invalid email or password");
         }
     }
 

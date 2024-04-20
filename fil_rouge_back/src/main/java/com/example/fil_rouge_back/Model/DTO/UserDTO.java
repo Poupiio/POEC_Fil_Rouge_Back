@@ -25,4 +25,12 @@ public class UserDTO {
     private String password;
     private String email;
     private Set<Long> projectId;
+    // Ajoutez une méthode pour définir le token JWT
+    @Setter
+    private String token; // Ajoutez un champ pour stocker le token JWT
+
+    public void setToken(String token) {
+        this.token = token;
+        System.out.println("UserDTO:" + token);
+    }
 }
