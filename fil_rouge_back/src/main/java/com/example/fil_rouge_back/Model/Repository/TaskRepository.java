@@ -17,4 +17,3 @@ public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
     // Fonction pour récupérer les tâches associées à un projet spécifique (id)
     List<TaskEntity> findAllTasksByProjectId(Long projectId);
 }
-

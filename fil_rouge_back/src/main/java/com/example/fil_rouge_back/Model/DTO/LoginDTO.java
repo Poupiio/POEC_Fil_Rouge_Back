@@ -12,4 +12,12 @@ import lombok.Setter;
 public class LoginDTO {
     private String email;
     private String password;
+    @Setter
+    private String token; // Ajoutez un champ pour stocker le token JWT
+
+    // Ajoutez une méthode pour définir le token JWT
+    public void setToken(String token) {
+        this.token = token;
+        System.out.println("LoginDTO:" + token);
+    }
 }
