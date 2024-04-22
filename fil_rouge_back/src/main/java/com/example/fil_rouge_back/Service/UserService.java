@@ -117,15 +117,12 @@ public class UserService {
     // Modifiez votre service utilisateur
     public LoginDTO login(LoginDTO loginDTO) throws AuthenticationException {
         Optional<User> userOptional = userRepo.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword());
-        System.out.println("UserService login:" + userOptional);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             String token = jwtService.generateToken(user.getEmail());
             loginDTO.setToken(token);
-            System.out.println("UserService login:" + token);
             return loginDTO;
         } else {
-            System.out.println("UserService login: User not found for email: " + loginDTO.getEmail());
             throw new AuthenticationException("Invalid email or password");
         }
     }

@@ -18,6 +18,5 @@ public class LoginDTO {
     // Ajoutez une méthode pour définir le token JWT
     public void setToken(String token) {
         this.token = token;
-        System.out.println("LoginDTO:" + token);
     }
 }
