@@ -46,7 +46,6 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<LoginDTO> login(@RequestBody LoginDTO loginDTO) throws AuthenticationException {
         LoginDTO response = this.userService.login(loginDTO);
-        System.out.println("Login:" + response);
         if (response != null) {
             return ResponseEntity.ok(response);
         } else {
