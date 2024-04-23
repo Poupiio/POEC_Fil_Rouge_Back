@@ -58,7 +58,6 @@ public class UserService {
         // Générer un token JWT pour le nouvel utilisateur
         String token = jwtService.generateToken(savedUser.getId(), savedUser.getEmail());
         userDTO.setToken(token);
-        System.out.println("UserService create User:" + token);
 
 
         return convertToUserDTO(savedUser);
@@ -67,7 +66,6 @@ public class UserService {
     // Modification d'un utilisateur
     public UserDTO updateUser(Long id, UserDTO data) {
         User user = this.userRepo.findById(id).get();
-        System.out.println("id du user à modifier : " + id);
 
         user.setUsername(convertToUser(data).getUsername());
         user.setEmail(convertToUser(data).getEmail());

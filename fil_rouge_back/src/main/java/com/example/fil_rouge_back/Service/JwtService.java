@@ -32,7 +32,6 @@ public class JwtService {
                 .setExpiration(expirationDate) // Date d'expiration du token
                 .signWith(SignatureAlgorithm.HS256, secretKey) // Signature du token avec la clé secrète
                 .compact();
-        System.out.println("JWT service:" + token);
         return token;
     }
 
