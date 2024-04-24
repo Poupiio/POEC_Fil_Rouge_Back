@@ -13,6 +13,7 @@ import java.util.Optional;
 @NoArgsConstructor
 @RestController
 @RequestMapping("/project")
+@CrossOrigin("*")
 public class ProjectController {
     private ProjectService projectService;
 
