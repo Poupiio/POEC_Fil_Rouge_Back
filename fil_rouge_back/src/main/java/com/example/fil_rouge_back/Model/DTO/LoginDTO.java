@@ -10,13 +10,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginDTO {
+    private Long id;
     private String email;
     private String password;
-    @Setter
-    private String token; // Ajoutez un champ pour stocker le token JWT
+    private String token;
 
-    // Ajoutez une méthode pour définir le token JWT
-    public void setToken(String token) {
-        this.token = token;
-    }
 }

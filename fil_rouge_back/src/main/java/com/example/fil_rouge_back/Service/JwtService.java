@@ -13,7 +13,7 @@ import java.util.Date;
 public class JwtService {
 
     // Méthode pour générer un token JWT
-    public String generateToken(String userEmail) {
+    public String generateToken(Long userId, String userEmail) {
         byte[] secretKeyBytes = Keys.secretKeyFor(SignatureAlgorithm.HS256).getEncoded();
 
         // Utiliser la clé secrète générée pour signer le token JWT
@@ -26,12 +26,12 @@ public class JwtService {
 
         // Génération du token JWT
         String token = Jwts.builder()
+                .claim("id", userId)
                 .setSubject(userEmail) // Sujet du token (dans ce cas, l'email de l'utilisateur)
                 .setIssuedAt(now) // Date de création du token
                 .setExpiration(expirationDate) // Date d'expiration du token
                 .signWith(SignatureAlgorithm.HS256, secretKey) // Signature du token avec la clé secrète
                 .compact();
-        System.out.println("JWT service:" + token);
         return token;
     }
 
