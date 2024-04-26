@@ -1,6 +1,6 @@
 # ib cegos - POEC Java :computer: - Février 2024, Avril 2024
 
-## Application de gestion de projets intégrant un tableau Kanban :books:
+## Application de gestion de projets intégrant un tableau Kanban - TROLLE :books:
 
 ### Création du back-end [:pencil2:](./fil_rouge_back/src/main/java/com/example/fil_rouge_back)
   > Utilisation du framework Spring Boot
